@@ -1,0 +1,38 @@
+{{define "content"}}{{with .Data}}
+<div class="wrap">
+  <article class="detail s-{{.Style}}">
+    <div>
+      <div class="detail-media spin-stage">
+        {{template "bottle-hd" .}}
+        {{if .Img}}<p class="spin-hint" aria-hidden="true">⟲ Drag to turn</p>{{end}}
+      </div>
+      {{template "credit" .}}
+    </div>
+    <div>
+      <a class="back rise" href="/wines">← Back to the cellar</a>
+      <p class="eyebrow rise" style="--i:1">{{.Producer}}</p>
+      <h1 class="rise" style="--i:2">{{.Name}}</h1>
+      <p class="meta rise" style="--i:2">{{.Region}}, {{.Country}}</p>
+      <p class="notes rise" style="--i:3">{{.Description}}</p>
+      <dl class="facts rise" style="--i:3">
+        <div><dt>Grape</dt><dd>{{.Grape}}</dd></div>
+        <div><dt>Style</dt><dd>{{label .Style}}</dd></div>
+        {{with .Vintage}}<div><dt>Vintage</dt><dd>{{.}}</dd></div>{{end}}
+        <div><dt>Region</dt><dd>{{.Region}}</dd></div>
+        <div><dt>Country</dt><dd>{{.Country}}</dd></div>
+        <div><dt>ABV</dt><dd>{{.ABV}}%</dd></div>
+      </dl>
+      <div class="rise" style="--i:4">
+        <h2>Tasting notes</h2>
+        <p>{{.Notes}}</p>
+        <h2>Pairs with</h2>
+        <p>{{.Pairing}}</p>
+      </div>
+      <div class="card-foot rise" style="--i:5">
+        <span class="price price-lg">{{money .PriceCents}}</span>
+        {{template "add" .}}
+      </div>
+    </div>
+  </article>
+</div>
+{{end}}{{end}}

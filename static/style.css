@@ -1,0 +1,452 @@
+/* The Cellar: a 1920s speakeasy. Dark walnut, brass, candle-light, Art Deco lines. */
+
+@property --mx { syntax: "<percentage>"; inherits: true; initial-value: 72%; }
+@property --my { syntax: "<percentage>"; inherits: true; initial-value: 30%; }
+
+:root {
+  color-scheme: dark;
+  --bg: #0e0b09;
+  --bg-2: #15100c;
+  --panel: #1b1410;
+  --ink: #eadfca;
+  --muted: #a3927a;
+  --brass: #c9a45c;
+  --brass-hi: #e8cd8a;
+  --brass-lo: #8a6d3b;
+  --line: rgb(201 164 92 / .3);
+  --line-soft: rgb(201 164 92 / .13);
+  --label: #efe4cf;
+  --deco: "Marcellus", Georgia, serif;
+  --serif: "Lora", Georgia, serif;
+  --sans: "Lato", system-ui, sans-serif;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  /* Silhouette of the drawn bottle, so the glint stays inside it. Photos pass their own --mask. */
+  --bottle-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 200'%3E%3Cpath d='M25 2h10v6h1v50c0 14 18 20 18 40v94a6 6 0 0 1-6 6H12a6 6 0 0 1-6-6V98c0-20 18-26 18-40V8h1z'/%3E%3C/svg%3E");
+}
+
+/* Bottle colours and the backlight glow per wine style. */
+.s-red       { --glass: #3a1019; --foil: #7a1f30; --glow: rgb(170 40 60 / .38); }
+.s-white     { --glass: #c2b871; --foil: #d8c48a; --glow: rgb(220 200 120 / .26); }
+.s-rose      { --glass: #e8a6a2; --foil: #f2d2cc; --glow: rgb(240 150 150 / .26); }
+.s-sparkling { --glass: #24402b; --foil: #c9a45c; --glow: rgb(150 180 120 / .26); }
+.s-dessert   { --glass: #94621a; --foil: #3a1f0e; --glow: rgb(220 150 60 / .3); }
+
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--bg); }
+body {
+  margin: 0; min-height: 100vh; display: flex; flex-direction: column;
+  font: 400 17px/1.65 var(--sans); color: var(--ink); -webkit-font-smoothing: antialiased;
+  background: radial-gradient(ellipse at 50% -10%, #2a1a10, transparent 55%), var(--bg);
+}
+body::after { /* film grain over everything */
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: .07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+main { flex: 1; } /* keeps the footer at the bottom on short pages */
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+h1, h2, h3 { margin: 0; font-weight: 400; line-height: 1.1; }
+h1, h2 { font-family: var(--deco); letter-spacing: .04em; }
+h3 { font-family: var(--serif); font-weight: 600; }
+p { margin: 0 0 1em; }
+.wrap { width: min(1160px, 100% - 32px); margin-inline: auto; }
+.center { text-align: center; margin-top: 52px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.eyebrow { display: inline-block; font: 600 .7rem/1 var(--sans); letter-spacing: .3em; text-transform: uppercase; color: var(--brass); }
+.meta { color: var(--muted); font-size: .9rem; }
+:focus-visible { outline: 2px solid var(--brass-hi); outline-offset: 3px; }
+
+/* Deco divider: brass hairline with a diamond */
+.ornament {
+  display: block; position: relative; width: 180px; height: 12px; margin: 18px auto 0;
+  background: linear-gradient(90deg, transparent, var(--brass) 30% 70%, transparent) center / 100% 1px no-repeat;
+}
+.ornament::after {
+  content: ""; position: absolute; left: 50%; top: 50%; width: 7px; height: 7px;
+  background: var(--brass); transform: translate(-50%, -50%) rotate(45deg);
+}
+
+/* Header */
+.site-header {
+  position: sticky; top: 0; z-index: 10; view-transition-name: header;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px max(16px, calc((100% - 1160px) / 2));
+  background: rgb(14 11 9 / .85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line);
+}
+.site-header::after { content: ""; position: absolute; left: 0; right: 0; bottom: -5px; height: 1px; background: var(--line-soft); }
+.logo { font: 400 1.35rem/1 var(--deco); letter-spacing: .28em; text-transform: uppercase; color: var(--brass-hi); }
+.logo span { font-size: .5em; vertical-align: middle; color: var(--brass); }
+.site-header nav { display: flex; gap: 30px; font-size: .78rem; letter-spacing: .22em; text-transform: uppercase; }
+.site-header nav a { position: relative; display: inline-flex; align-items: center; }
+.site-header nav a::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 1px; background: var(--brass);
+  transform: scaleX(0); transform-origin: right; transition: transform .4s var(--ease);
+}
+.site-header nav a:hover::after { transform: scaleX(1); transform-origin: left; }
+.badge {
+  display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 6px; margin-left: 8px;
+  border-radius: 10px; background: var(--brass); color: var(--bg); font-size: .7rem; font-weight: 600; letter-spacing: 0;
+}
+.badge:empty { display: none; }
+.badge.bump { animation: bump .5s var(--ease); }
+@keyframes bump { 35% { transform: scale(1.45); box-shadow: 0 0 16px var(--brass); } }
+
+/* Buttons: square, brass, with a glint on hover */
+.btn {
+  position: relative; overflow: hidden; display: inline-flex; align-items: center; justify-content: center;
+  padding: 11px 30px; border: 1px solid var(--brass); background: transparent; color: var(--brass-hi); cursor: pointer;
+  font: 600 .74rem/1.5 var(--sans); letter-spacing: .24em; text-transform: uppercase; text-align: center;
+  transition: transform .3s var(--ease), box-shadow .3s, background .3s;
+}
+.btn::before { content: ""; position: absolute; inset: 3px; border: 1px solid var(--line-soft); pointer-events: none; }
+.btn::after {
+  content: ""; position: absolute; top: 0; bottom: 0; left: -60%; width: 40%; transform: skewX(-20deg);
+  background: linear-gradient(100deg, transparent, rgb(255 240 200 / .35), transparent); transition: left .7s var(--ease);
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px -10px rgb(201 164 92 / .5); }
+.btn:hover::after { left: 120%; }
+.btn-sm { padding: 8px 16px; font-size: .64rem; }
+.btn-brass { background: linear-gradient(180deg, var(--brass-hi), var(--brass) 55%, var(--brass-lo)); border-color: var(--brass-hi); color: #1a120b; }
+.btn-brass::before { border-color: rgb(26 18 11 / .3); }
+
+/* Bottles: drawn SVG or a real photo, same box and same effects either way */
+svg.bottle { aspect-ratio: 3 / 10; height: auto; }
+.bottle-wrap { position: relative; height: 210px; aspect-ratio: 3 / 10; }
+.bottle-wrap > * { width: 100%; height: 100%; object-fit: contain; }
+.bottle-wrap::after { /* glint of light across the glass, masked to the bottle's own shape */
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(105deg, transparent 38%, rgb(255 238 205 / .6) 50%, transparent 62%) 100% 0 / 300% 100% no-repeat;
+  -webkit-mask: var(--mask, var(--bottle-mask)) center / contain no-repeat;
+  mask: var(--mask, var(--bottle-mask)) center / contain no-repeat;
+}
+@keyframes glint { from { background-position: 100% 0; } to { background-position: 0 0; } }
+@keyframes glint-loop { 0% { background-position: 100% 0; } 16%, 100% { background-position: 0 0; } }
+
+/* Hero: a lamp-lit back bar */
+.hero {
+  position: relative; isolation: isolate; overflow: hidden; display: grid; align-items: center; min-height: min(88vh, 780px);
+  background: radial-gradient(ellipse at 50% 120%, #3a1d10, transparent 60%), linear-gradient(180deg, #0b0807, #140d0a);
+  border-bottom: 1px solid var(--line);
+  transition: --mx .9s var(--ease), --my .9s var(--ease);
+}
+.hero::before { /* the lamp: flickers, and drifts toward the pointer (app.js) */
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: radial-gradient(circle at var(--mx) var(--my), rgb(255 186 110 / .2), transparent 38%);
+  animation: flicker 5s infinite;
+}
+.hero::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(ellipse, transparent 50%, rgb(0 0 0 / .6)); }
+.sunburst { /* slowly turning Art Deco rays */
+  position: absolute; z-index: -2; left: 74%; top: 100%; width: 1800px; aspect-ratio: 1; translate: -50% -50%;
+  background: repeating-conic-gradient(rgb(201 164 92 / .09) 0deg 3deg, transparent 3deg 10deg);
+  -webkit-mask: radial-gradient(circle, #000 0 18%, transparent 55%); mask: radial-gradient(circle, #000 0 18%, transparent 55%);
+  animation: spin 160s linear infinite;
+}
+.hero-inner { display: grid; grid-template-columns: 1.05fr 1fr; gap: 48px; align-items: center; padding: 72px 0; }
+.hero h1 { margin: 20px 0 24px; font-size: clamp(2.6rem, 6vw, 5rem); line-height: 1.05; animation: focus-in 1.6s var(--ease) .3s backwards; }
+.hero h1 em { font-family: var(--serif); font-weight: 500; letter-spacing: 0; color: var(--brass-hi); }
+.hero p { max-width: 40ch; font-size: 1.1rem; color: var(--muted); margin-bottom: 34px; }
+.back-bar { position: relative; display: grid; justify-items: center; }
+.back-bar::before { /* spotlight cone from above */
+  content: ""; position: absolute; left: 50%; top: -180px; width: 150%; height: calc(100% + 180px); translate: -50% 0; pointer-events: none;
+  background: conic-gradient(from 180deg at 50% 0, rgb(255 214 150 / .17) 0deg, transparent 24deg 336deg, rgb(255 214 150 / .17) 360deg);
+  -webkit-mask: linear-gradient(#000 45%, transparent); mask: linear-gradient(#000 45%, transparent);
+  animation: flicker 5s infinite;
+}
+.shelf-bottles { position: relative; display: flex; align-items: flex-end; justify-content: center; gap: 14px; }
+.hero-bottle {
+  height: 240px; filter: drop-shadow(0 18px 18px rgb(0 0 0 / .55)) drop-shadow(0 0 1px rgb(255 214 150 / .4));
+  animation: bottle-in 1.5s var(--ease) backwards; animation-delay: calc(var(--i) * 140ms + 300ms);
+}
+.hero-bottle:nth-child(2), .hero-bottle:nth-child(4) { height: 285px; }
+.hero-bottle:nth-child(3) { height: 330px; }
+.hero-bottle::after { animation: glint-loop 7s ease-in-out infinite; animation-delay: calc(var(--i) * .6s + 2.4s); }
+.shelf {
+  width: 110%; height: 12px; animation: rise 1.2s var(--ease) .2s backwards;
+  background: linear-gradient(180deg, var(--brass-hi), var(--brass) 40%, var(--brass-lo));
+  box-shadow: 0 2px 0 #3a2a14, 0 30px 50px rgb(0 0 0 / .7);
+}
+/* Hold the hero's entrance until the doors start to open, so visitors see it. */
+body:has(#age-gate:not(.htmx-swapping)) .hero *,
+body:has(#age-gate:not(.htmx-swapping)) .hero *::before,
+body:has(#age-gate:not(.htmx-swapping)) .hero *::after { animation-play-state: paused; }
+
+@keyframes flicker { 0%, 100% { opacity: 1; } 8% { opacity: .82; } 10% { opacity: .96; } 42% { opacity: .9; } 44% { opacity: .74; } 46% { opacity: 1; } 71% { opacity: .9; } }
+@keyframes spin { to { rotate: 360deg; } }
+@keyframes focus-in { from { opacity: 0; filter: blur(12px); translate: 0 20px; } }
+@keyframes bottle-in { from { opacity: 0; transform: translateY(70px); } }
+@keyframes rise { from { opacity: 0; translate: 0 24px; } }
+.rise { animation: rise 1s var(--ease) backwards; animation-delay: calc(var(--i, 0) * 120ms + 150ms); }
+.hero .rise { animation-delay: calc(var(--i, 0) * 160ms + 500ms); }
+
+/* Sections */
+.section { padding: 104px 0; }
+.page { padding-top: 64px; }
+.narrow { max-width: 780px; }
+.band { background: linear-gradient(180deg, var(--bg-2), var(--bg)); border-block: 1px solid var(--line-soft); }
+.section-title { text-align: center; margin-bottom: 56px; }
+.section-title h2, .page-title { font-size: clamp(2.3rem, 4.6vw, 3.4rem); margin-top: 14px; }
+.page-title { margin-bottom: 36px; }
+
+.styles { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 18px; }
+.style-tile {
+  position: relative; display: grid; justify-items: center; gap: 18px; padding: 40px 16px 28px;
+  border: 1px solid var(--line); background: radial-gradient(ellipse at 50% 85%, var(--glow), transparent 65%), var(--panel);
+  transition: transform .5s var(--ease), box-shadow .5s, border-color .5s;
+}
+.style-tile::before { content: ""; position: absolute; inset: 5px; border: 1px solid var(--line-soft); pointer-events: none; }
+.style-tile:hover { transform: translateY(-6px); border-color: var(--brass); box-shadow: 0 24px 40px -20px #000, 0 0 40px -12px var(--glow); }
+.style-tile .bottle { width: 34px; filter: drop-shadow(0 0 1px rgb(255 214 150 / .45)); transition: transform .6s var(--ease); }
+.style-tile:hover .bottle { transform: rotate(-8deg) translateY(-4px); }
+.style-tile span { font: 400 1.05rem/1 var(--deco); letter-spacing: .16em; text-transform: uppercase; }
+
+/* Cards: each bottle sits in a backlit Deco arch */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 28px; }
+.card {
+  position: relative; display: flex; flex-direction: column;
+  background: linear-gradient(180deg, var(--panel), var(--bg-2)); border: 1px solid var(--line);
+  transition: transform .5s var(--ease), box-shadow .5s var(--ease), border-color .5s;
+}
+.card::before { content: ""; position: absolute; inset: 6px; border: 1px solid var(--line-soft); pointer-events: none; }
+.card:hover { --lift: -10px; transform: translateY(-4px); border-color: var(--brass); box-shadow: 0 30px 60px -30px #000, 0 0 50px -18px var(--glow); }
+.card-media {
+  position: relative; display: grid; place-items: center; overflow: hidden; height: 280px; margin: 18px 18px 0;
+  border: 1px solid var(--line); border-bottom: 0; border-radius: 999px 999px 0 0;
+  background: radial-gradient(ellipse at 50% 70%, var(--glow), transparent 60%), radial-gradient(ellipse at 50% 100%, rgb(214 160 90 / .22), transparent 70%), #0f0b08;
+}
+.card-media .bottle-wrap {
+  height: 220px; filter: drop-shadow(0 14px 14px rgb(0 0 0 / .6)) drop-shadow(0 0 1px rgb(255 214 150 / .35));
+  transform: perspective(700px) translateY(var(--lift, 0px)) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform .3s ease-out;
+}
+.card:hover .bottle-wrap::after { animation: glint 1.1s ease-out; }
+.quick-link { position: relative; z-index: 1; display: grid; place-items: center; width: 100%; height: 100%; cursor: zoom-in; }
+.quick-link::before { /* "Quick look" tag that slides up on hover */
+  content: "Quick look"; position: absolute; bottom: 16px; left: 50%; z-index: 1; translate: -50% 8px; opacity: 0;
+  padding: 7px 12px; white-space: nowrap; font-size: .6rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--bg); background: var(--brass); transition: opacity .3s, translate .4s var(--ease);
+}
+.card:hover .quick-link::before, .quick-link:focus-visible::before { opacity: 1; translate: -50% 0; }
+
+/* Quick-look dialog */
+html:has(#quick[open]) { overflow: hidden; }
+#quick {
+  width: min(940px, 100% - 32px); max-height: calc(100vh - 32px); padding: 0; overflow: auto; color: var(--ink);
+  background: linear-gradient(180deg, var(--panel), var(--bg-2)); border: 1px solid var(--brass);
+  box-shadow: 0 0 0 6px var(--bg-2), 0 0 0 7px var(--line), 0 40px 100px #000;
+}
+#quick::backdrop { background: rgb(8 5 4 / .78); backdrop-filter: blur(8px); }
+#quick[open] { animation: quick-in .6s var(--ease); }
+#quick[open]::backdrop { animation: fade-in .4s ease; }
+@keyframes quick-in { from { opacity: 0; translate: 0 30px; scale: .97; } }
+@keyframes fade-in { from { opacity: 0; } }
+.quick-close { position: absolute; top: 10px; right: 14px; z-index: 2; padding: 4px 10px; background: none; border: 0; color: var(--brass-hi); font: 300 2rem/1 var(--sans); cursor: pointer; }
+.quick { display: grid; grid-template-columns: 1fr 1.15fr; gap: 40px; align-items: center; padding: 40px; }
+.quick h2 { font-size: clamp(1.9rem, 3.6vw, 2.8rem); margin: 12px 0 8px; }
+.quick .notes { margin-top: 16px; }
+.quick .facts { grid-template-columns: 1fr 1fr; margin: 20px 0; }
+.quick .facts dd { font-size: 1.05rem; }
+.quick .back { margin: 18px 0 0; }
+.card-body { display: flex; flex-direction: column; gap: 6px; flex: 1; padding: 22px 24px 24px; }
+.card h3 { font-size: 1.55rem; }
+.card h3 a::after { content: ""; position: absolute; inset: 0; } /* whole card is clickable */
+.card form { position: relative; z-index: 1; } /* keep the button above that link */
+.card-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: auto; padding-top: 16px; border-top: 1px solid var(--line-soft); }
+.price { font: 600 1.4rem/1 var(--serif); color: var(--brass-hi); }
+.price-lg { font-size: 2.2rem; }
+
+/* Filters */
+.filters { display: flex; flex-wrap: wrap; gap: 12px 18px; align-items: center; margin-bottom: 30px; padding: 20px 0; border-block: 1px solid var(--line); }
+.filters input[type=search], .filters select, .checkout input {
+  font: inherit; font-size: .9rem; padding: 11px 16px; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 0;
+}
+.filters input::placeholder { color: var(--muted); }
+.filters input[type=search] { flex: 1 1 220px; }
+.pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; border: 0; }
+.pill {
+  cursor: pointer; padding: 9px 16px; border: 1px solid var(--line); font-size: .72rem; letter-spacing: .16em; text-transform: uppercase;
+  transition: background .3s, color .3s, border-color .3s;
+}
+.pill:hover { border-color: var(--brass); color: var(--brass-hi); }
+.pill input { position: absolute; opacity: 0; pointer-events: none; }
+.pill:has(:checked) { background: var(--brass); border-color: var(--brass); color: var(--bg); }
+.pill:has(:focus-visible) { outline: 2px solid var(--brass-hi); outline-offset: 2px; }
+.count { color: var(--muted); font-size: .85rem; margin-bottom: 18px; }
+.empty { padding: 60px 0; text-align: center; font: 500 1.5rem var(--serif); color: var(--muted); }
+.empty a { color: var(--brass-hi); }
+
+/* Wine detail and quick look: the bottle floats (and turns) under a spotlight */
+.detail { display: grid; grid-template-columns: 1fr 1.1fr; gap: 64px; align-items: center; padding: 56px 0 104px; }
+.detail-media, .quick-media {
+  position: relative; display: grid; place-items: center; overflow: hidden; height: 600px;
+  border: 1px solid var(--line); border-radius: 999px 999px 0 0;
+  background:
+    conic-gradient(from 180deg at 50% 0, rgb(255 214 150 / .16) 0deg, transparent 22deg 338deg, rgb(255 214 150 / .16) 360deg),
+    radial-gradient(ellipse at 50% 75%, var(--glow), transparent 60%), #0f0b08;
+}
+.detail-media::before, .quick-media::before { content: ""; position: absolute; inset: 8px; border: 1px solid var(--line-soft); border-radius: inherit; pointer-events: none; }
+.detail-media::after, .quick-media::after { /* floor shadow that breathes with the float */
+  content: ""; position: absolute; bottom: 8%; left: 50%; width: 34%; height: 22px; translate: -50% 0;
+  background: radial-gradient(ellipse, rgb(0 0 0 / .8), transparent 70%); animation: shadow 6s ease-in-out infinite;
+}
+.detail-media .bottle-wrap {
+  height: 470px; filter: drop-shadow(0 0 1px rgb(255 214 150 / .45));
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform .3s ease-out; animation: float 6s ease-in-out infinite;
+}
+.detail-media .bottle-wrap::after, .quick-media .bottle-wrap::after { animation: glint-loop 6s ease-in-out 1.2s infinite; }
+.quick-media { height: 500px; }
+.quick-media .bottle-wrap { height: 400px; filter: drop-shadow(0 0 1px rgb(255 214 150 / .45)); animation: float 6s ease-in-out infinite; }
+.spin-stage canvas { cursor: grab; touch-action: pan-y; } /* horizontal drag turns the bottle, vertical still scrolls */
+.spin-stage canvas:active { cursor: grabbing; }
+.spin-hint {
+  position: absolute; bottom: 14px; left: 0; right: 0; margin: 0; text-align: center; pointer-events: none;
+  font-size: .62rem; letter-spacing: .22em; text-transform: uppercase; color: var(--muted);
+}
+.credit { margin: 10px 0 0; font-size: .72rem; color: var(--muted); text-align: center; }
+.credit a, .credits a, .site-footer p a { text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+.credits { padding-left: 1.2em; line-height: 2.1; }
+@keyframes float { 50% { translate: 0 -14px; } }
+@keyframes shadow { 50% { scale: .78; opacity: .55; } }
+.detail h1 { font-size: clamp(2.4rem, 5vw, 4rem); margin: 14px 0 8px; }
+.detail h2 { font: 600 .7rem/1 var(--sans); letter-spacing: .28em; text-transform: uppercase; color: var(--brass); margin: 24px 0 10px; }
+.notes { font: 500 1.3rem/1.5 var(--serif); }
+.back { display: block; width: max-content; margin-bottom: 24px; font-size: .8rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.back:hover { color: var(--brass-hi); }
+.facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin: 28px 0; padding: 22px 0; border-block: 1px solid var(--line); }
+.facts dt { font-size: .64rem; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); }
+.facts dd { margin: 6px 0 0; font: 500 1.2rem var(--serif); }
+
+/* My list */
+.cart-line { display: grid; grid-template-columns: 48px 1fr auto 44px; gap: 20px; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--line-soft); }
+.cart-line .bottle-wrap { height: 80px; filter: drop-shadow(0 0 1px rgb(255 214 150 / .45)); }
+.line-name { font: 600 1.35rem var(--serif); }
+.remove-btn {
+  display: grid; place-items: center; width: 44px; height: 44px; padding: 0; cursor: pointer;
+  color: var(--brass); background: none; border: 1px solid rgb(201 164 92 / .5); border-radius: 50%;
+  transition: color .2s, border-color .2s, background .2s;
+}
+.remove-btn:hover, .remove-btn:focus-visible { color: #e9a28c; border-color: #e9a28c; background: rgb(233 162 140 / .1); }
+.remove-btn svg { width: 22px; height: 22px; }
+.cart-line .price { text-align: right; }
+.checkout { margin-top: 28px; display: grid; grid-template-columns: minmax(0, 1fr); justify-items: end; gap: 10px; }
+.checkout label { font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.checkout-row { display: flex; gap: 12px; width: min(100%, 520px); }
+.checkout input { flex: 1; min-width: 0; }
+.checkout input::placeholder { color: var(--muted); }
+.checkout .fine { margin: 0; font-size: .8rem; color: var(--muted); }
+.form-error { margin: 0; color: #e9a28c; }
+.hp { position: absolute; left: -9999px; } /* bot trap, see checkout in handlers.go */
+.notice { padding: 24px 28px; background: var(--panel); border-left: 3px solid var(--brass); font: 500 1.4rem var(--serif); }
+
+/* The door (age gate). Doors swing inward while htmx waits to remove it. */
+html:has(#age-gate) { overflow: hidden; }
+#age-gate { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 16px; perspective: 1600px; }
+.door {
+  position: absolute; top: 0; bottom: 0; width: 50%; backface-visibility: hidden;
+  background:
+    linear-gradient(90deg, rgb(0 0 0 / .45), transparent 12% 88%, rgb(0 0 0 / .45)),
+    repeating-linear-gradient(90deg, #2c1b11 0 3px, #24160d 3px 8px, #301d12 8px 10px, #26170e 10px 15px);
+  transition: transform 1.2s cubic-bezier(.65, 0, .25, 1), filter 1.2s;
+}
+.door-l { left: 0; transform-origin: left center; box-shadow: inset -1px 0 0 #000; }
+.door-r { right: 0; transform-origin: right center; }
+.door::before { /* Deco moulding */
+  content: ""; position: absolute; inset: 7% 12%; border: 2px solid rgb(201 164 92 / .4);
+  box-shadow: inset 0 0 0 8px rgb(0 0 0 / .25), inset 0 0 0 9px rgb(201 164 92 / .22);
+}
+.door::after { /* brass handle */
+  content: ""; position: absolute; top: 50%; width: 10px; height: 110px; translate: 0 -50%; border-radius: 5px;
+  background: linear-gradient(90deg, var(--brass-lo), var(--brass-hi), var(--brass-lo)); box-shadow: 0 6px 14px rgb(0 0 0 / .6);
+}
+.door-l::after { right: 22px; }
+.door-r::after { left: 22px; }
+#age-gate.htmx-swapping .door-l { transform: rotateY(100deg); filter: brightness(.4); }
+#age-gate.htmx-swapping .door-r { transform: rotateY(-100deg); filter: brightness(.4); }
+.gate-card { /* the peephole slot slides open */
+  position: relative; z-index: 1; width: min(460px, 100%); padding: 44px 36px 36px; text-align: center;
+  background: linear-gradient(180deg, #1d1510, #120d0a); border: 1px solid var(--brass);
+  box-shadow: 0 0 0 6px #120d0a, 0 0 0 7px var(--line), 0 40px 80px rgb(0 0 0 / .7);
+  animation: slot-open 1.1s var(--ease) .3s backwards; transition: opacity .4s, transform .4s var(--ease);
+}
+#age-gate.htmx-swapping .gate-card { opacity: 0; transform: scale(.94); }
+@keyframes slot-open { from { clip-path: inset(50% 0 50% 0); } }
+.gate-card h2 { font-size: 2.6rem; letter-spacing: .14em; text-transform: uppercase; color: var(--brass-hi); margin-top: 14px; }
+.gate-card p { color: var(--muted); margin: 20px 0 0; }
+.gate-card .actions { display: grid; gap: 10px; margin-top: 26px; }
+.gate-card .denied { font: 500 1.35rem var(--serif); color: var(--ink); }
+
+/* Footer */
+.site-footer {
+  display: grid; justify-items: center; gap: 14px; padding: 56px 16px; text-align: center;
+  color: var(--muted); font-size: .85rem; background: var(--bg-2); border-top: 1px solid var(--line);
+}
+.site-footer .ornament { margin: 0 0 6px; }
+.site-footer p { margin: 0; }
+
+/* Scroll-reveal for cards and tiles, where supported (content stays visible elsewhere). */
+@supports (animation-timeline: view()) {
+  .card, .style-tile { animation: rise linear both; animation-timeline: view(); animation-range: entry 0% entry 60%; }
+}
+
+/* Smooth page-to-page transitions; bottles glide via their view-transition-name. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+}
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: .25s; }
+::view-transition-group(*) { animation-duration: .35s; animation-timing-function: cubic-bezier(.2, .7, .2, 1); }
+
+/* "Enter the cellar" (app.js): velvet curtains sweep shut here, then part on the next page. */
+.curtain { position: fixed; inset: 0; z-index: 250; display: flex; pointer-events: none; }
+.curtain-l, .curtain-r {
+  flex: 1; animation: curtain-in .45s cubic-bezier(.5, 0, .2, 1) both;
+  background: /* light from above and folds of velvet */
+    linear-gradient(180deg, rgb(255 200 150 / .12), transparent 25%, rgb(0 0 0 / .5)),
+    repeating-linear-gradient(90deg, #3d0810 0, #7c1624 2.5%, #a62436 4.5%, #7c1624 6.5%, #3d0810 9%);
+}
+.curtain-l { --from: -100%; view-transition-name: curtain-l; box-shadow: inset -4px 0 0 var(--brass), 8px 0 30px rgb(0 0 0 / .6); }
+.curtain-r { --from: 100%; view-transition-name: curtain-r; box-shadow: inset 4px 0 0 var(--brass), -8px 0 30px rgb(0 0 0 / .6); }
+.curtain-top { /* the valance with its gold trim */
+  position: absolute; inset: 0 0 auto; height: clamp(56px, 11vh, 110px); view-transition-name: curtain-top;
+  background: linear-gradient(180deg, #2a0509, #6a121e 70%, #4a0c16); border-bottom: 3px solid var(--brass);
+  box-shadow: 0 10px 30px rgb(0 0 0 / .6); animation: curtain-top-in .35s cubic-bezier(.5, 0, .2, 1) both;
+}
+@keyframes curtain-in { from { translate: var(--from) 0; } }
+@keyframes curtain-top-in { from { translate: 0 -100%; } }
+/* The show goes up: each half gathers toward its side and slides off, then the valance rises. */
+::view-transition-old(curtain-l), ::view-transition-old(curtain-r) { animation: .8s cubic-bezier(.7, 0, .25, 1) .05s both; }
+::view-transition-old(curtain-l) { animation-name: curtain-out-l; transform-origin: left; }
+::view-transition-old(curtain-r) { animation-name: curtain-out-r; transform-origin: right; }
+::view-transition-old(curtain-top) { animation: curtain-out-top .45s cubic-bezier(.6, 0, .3, 1) .6s both; }
+@keyframes curtain-out-l { 70% { transform: scaleX(.18); } to { transform: translateX(-100%) scaleX(.18); } }
+@keyframes curtain-out-r { 70% { transform: scaleX(.18); } to { transform: translateX(100%) scaleX(.18); } }
+@keyframes curtain-out-top { to { transform: translateY(-100%); } }
+/* Bottles would otherwise glide in on top of the curtains. */
+html:active-view-transition-type(curtain) .bottle-wrap { view-transition-name: none !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}
+
+@media (max-width: 860px) {
+  .logo { font-size: 1.1rem; letter-spacing: .18em; }
+  .logo span { display: none; }
+  .site-header nav { gap: 18px; }
+  .hero-inner { grid-template-columns: 1fr; text-align: center; padding: 56px 0 40px; }
+  .hero p { margin-inline: auto; }
+  .sunburst { left: 50%; }
+  .shelf-bottles { gap: 8px; }
+  .hero-bottle { height: 140px; }
+  .hero-bottle:nth-child(2), .hero-bottle:nth-child(4) { height: 165px; }
+  .hero-bottle:nth-child(3) { height: 190px; }
+  .section { padding: 72px 0; }
+  .detail { grid-template-columns: 1fr; gap: 32px; padding-top: 24px; }
+  .detail-media { height: 420px; }
+  .detail-media .bottle-wrap { height: 320px; }
+  .facts { grid-template-columns: repeat(2, 1fr); }
+  .quick { grid-template-columns: 1fr; gap: 24px; padding: 24px; }
+  .quick-media { height: 340px; }
+  .quick-media .bottle-wrap { height: 280px; }
+  .cart-line { grid-template-columns: 40px 1fr auto 44px; gap: 12px; }
+  .door::after { height: 70px; }
+}

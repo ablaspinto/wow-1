@@ -1,0 +1,17 @@
+THE CELLAR · Your wine list
+
+Here {{if eq .Count 1}}is the wine{{else}}are the {{.Count}} wines{{end}} you saved, grouped by style, with everything a wine shop needs to find each one.
+{{range .Groups}}
+== {{.Label}} ==
+{{range .Lines}}
+{{.Wine.Producer}}: {{.Wine.Name}}{{with .Wine.Vintage}} {{.}}{{end}}
+{{with .Wine.Region}}{{.}}, {{end}}{{.Wine.Country}}{{with .Wine.Grape}} · {{.}}{{end}}{{if .Wine.ABV}} · {{.Wine.ABV}}% ABV{{end}}
+Typical price: {{money .Wine.PriceCents}}
+{{with .Wine.Pairing}}Pairs with: {{.}}
+{{end}}Where to buy: {{find .Wine}}
+Tasting notes: {{$.Site}}/wines/{{.Wine.ID}}
+{{end}}{{end}}
+Want to try one? "Where to buy" opens Wine-Searcher, which lists shops that stock the wine and what they charge.
+
+The Cellar · {{.Site}}
+Prices are typical retail prices, for reference. Nothing is sold through The Cellar. Please drink responsibly.

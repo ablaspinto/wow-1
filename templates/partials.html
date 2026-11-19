@@ -1,0 +1,128 @@
+{{/* Pieces shared by full pages and htmx fragment responses. */}}
+
+{{define "bottle-symbol"}}<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="bottle" viewBox="0 0 60 200">
+    <path style="fill:var(--glass)" d="M25 2h10v6h1v50c0 14 18 20 18 40v94a6 6 0 0 1-6 6H12a6 6 0 0 1-6-6V98c0-20 18-26 18-40V8h1z"/>
+    <rect style="fill:var(--foil)" x="23.5" y="2" width="13" height="34" rx="1.5"/>
+    <rect style="fill:var(--label)" x="10" y="112" width="40" height="54" rx="2"/>
+    <rect style="fill:var(--foil)" x="16" y="124" width="28" height="1.5"/>
+    <rect style="fill:var(--foil)" x="20" y="150" width="20" height="1"/>
+    <rect fill="#fff" opacity=".14" x="11" y="96" width="4" height="92" rx="2"/>
+  </symbol>
+</svg>{{end}}
+
+{{/* A real photo when the wine has one, otherwise the drawn bottle. */}}
+{{define "bottle-art"}}{{if .Img}}<img src="{{img .}}" alt="" decoding="async">{{else}}<svg class="bottle" aria-hidden="true"><use href="#bottle"/></svg>{{end}}{{end}}
+
+{{/* The big bottle (detail page, quick look): sharp screens get the 1400px @2x file. */}}
+{{define "bottle-art-hd"}}{{if .Img}}<img src="{{img .}}" srcset="{{img .}} 1x, {{img2x .}} 2x" alt="" decoding="async">{{else}}{{template "bottle-art" .}}{{end}}{{end}}
+
+{{/* view-transition-name lets the bottle glide between grid, detail and list pages.
+     --mask is the photo itself, so the glint only shines on the bottle, not the background. */}}
+{{define "bottle"}}<div class="bottle-wrap" style="view-transition-name: b-{{.ID}}{{if .Img}}; --mask: url({{img .}}){{end}}">{{template "bottle-art" .}}</div>{{end}}
+{{define "bottle-hd"}}<div class="bottle-wrap" style="view-transition-name: b-{{.ID}}{{if .Img}}; --mask: url({{img .}}){{end}}">{{template "bottle-art-hd" .}}</div>{{end}}
+
+{{define "badge"}}<span id="cart-badge" class="badge{{if .Bump}} bump{{end}}"{{if .OOB}} hx-swap-oob="true"{{end}}>{{if .Count}}{{.Count}}{{end}}</span>{{end}}
+
+{{define "add"}}<form action="/list/add" method="post" hx-post="/list/add" hx-target="#cart-badge" hx-swap="outerHTML"
+  hx-on::after-request="if (event.detail.successful) this.querySelector('button').textContent = 'Added ✓'">
+  <input type="hidden" name="id" value="{{.ID}}">
+  <button class="btn btn-sm">Add to list</button>
+</form>{{end}}
+
+{{/* Clicking the bottle opens the quick look; the rest of the card goes to the full page. */}}
+{{define "card"}}<article class="card s-{{.Style}}" data-tilt>
+  <div class="card-media">
+    <a class="quick-link" href="/wines/{{.ID}}" hx-get="/wines/{{.ID}}/quick" hx-target="#quick-body" aria-label="Quick look: {{.Name}}">{{template "bottle" .}}</a>
+  </div>
+  <div class="card-body">
+    <span class="eyebrow">{{.Producer}}</span>
+    <h3><a href="/wines/{{.ID}}">{{.Name}}</a></h3>
+    <span class="meta">{{.Region}}, {{.Country}}{{with .Vintage}} · {{.}}{{end}}</span>
+    <div class="card-foot">
+      <span class="price">{{money .PriceCents}}</span>
+      {{template "add" .}}
+    </div>
+  </div>
+</article>{{end}}
+
+{{define "grid"}}<p class="count">{{len .Wines}} {{if eq (len .Wines) 1}}wine{{else}}wines{{end}}</p>
+{{with .Wines}}<div class="grid">{{range .}}{{template "card" .}}{{end}}</div>
+{{else}}<p class="empty">Nothing on that shelf. Try loosening a filter.</p>{{end}}{{end}}
+
+{{define "cart-body"}}{{if .Badge.OOB}}{{template "badge" .Badge}}{{end}}
+<div id="cart">
+{{with .Lines}}
+  {{range .}}<div class="cart-line s-{{.Wine.Style}}">
+    {{template "bottle" .Wine}}
+    <div>
+      <a class="line-name" href="/wines/{{.Wine.ID}}">{{.Wine.Name}}</a>
+      <div class="meta">{{.Wine.Producer}} · {{with .Wine.Region}}{{.}}, {{end}}{{.Wine.Country}}</div>
+    </div>
+    <span class="price" title="Typical retail price">{{money .Wine.PriceCents}}</span>
+    <form action="/list/remove" method="post" hx-post="/list/remove" hx-target="#cart" hx-swap="outerHTML transition:true">
+      <input type="hidden" name="id" value="{{.Wine.ID}}">
+      <button class="remove-btn" aria-label="Remove {{.Wine.Name}}" title="Remove">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg>
+      </button>
+    </form>
+  </div>{{end}}
+  <form action="/list/send" method="post" class="checkout">
+    <label for="email">Your email</label>
+    <div class="hp" aria-hidden="true"><label>Leave this empty <input name="website" tabindex="-1" autocomplete="off"></label></div>
+    <div class="checkout-row">
+      <input id="email" type="email" name="email" value="{{$.Email}}" required autocomplete="email" placeholder="you@example.com"{{if $.Error}} aria-invalid="true" aria-describedby="checkout-error"{{end}}>
+      <button class="btn btn-brass">Email me my list</button>
+    </div>
+    {{with $.Error}}<p id="checkout-error" class="form-error" role="alert">{{.}}</p>{{end}}
+    <p class="fine">We'll email you these wines with tasting notes, pairings and shops that stock each one. Nothing is sold on this site.</p>
+  </form>
+{{else}}
+  <p class="empty">Your list is empty. <a href="/wines">Browse the collection →</a></p>
+{{end}}
+</div>{{end}}
+
+{{/* The speakeasy door. On "yes" htmx waits 1.2s (swap:1200ms) while CSS swings the doors open. */}}
+{{define "age-gate"}}<div id="age-gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+  <div class="door door-l" aria-hidden="true"></div>
+  <div class="door door-r" aria-hidden="true"></div>
+  <div class="gate-card">
+    <span class="eyebrow">Members only</span>
+    <h2 id="gate-title">The Cellar</h2>
+    <span class="ornament" aria-hidden="true"></span>
+    <div id="gate-msg">
+      <p>Knock twice. You must be of legal drinking age to come inside.</p>
+      <form class="actions" action="/age" method="post" hx-post="/age" hx-target="#age-gate" hx-swap="outerHTML swap:1200ms">
+        <button class="btn btn-brass" name="ok" value="yes" autofocus>I'm 21 or older, let me in</button>
+        <button class="btn" name="ok" value="no">I'm under 21</button>
+      </form>
+    </div>
+  </div>
+</div>{{end}}
+
+{{/* Quick-look dialog content. The bottle has no view-transition-name here: the same wine's card is still on the page. */}}
+{{define "quick"}}<div class="quick s-{{.Style}}">
+  <div class="quick-media spin-stage">
+    <div class="bottle-wrap"{{if .Img}} style="--mask: url({{img .}})"{{end}}>{{template "bottle-art-hd" .}}</div>
+    {{if .Img}}<p class="spin-hint" aria-hidden="true">⟲ Drag to turn</p>{{end}}
+  </div>
+  <div class="quick-info">
+    <span class="eyebrow">{{.Producer}}</span>
+    <h2 id="quick-title">{{.Name}}</h2>
+    <p class="meta">{{.Grape}} · {{.Region}}, {{.Country}}{{with .Vintage}} · {{.}}{{end}}</p>
+    <p class="notes">{{.Description}}</p>
+    <dl class="facts facts-sm">
+      <div><dt>Tasting notes</dt><dd>{{.Notes}}</dd></div>
+      <div><dt>Pairs with</dt><dd>{{.Pairing}}</dd></div>
+    </dl>
+    <div class="card-foot">
+      <span class="price price-lg">{{money .PriceCents}}</span>
+      {{template "add" .}}
+    </div>
+    <a class="back" href="/wines/{{.ID}}">Full details →</a>
+  </div>
+</div>{{end}}
+
+{{define "credit"}}{{if .Credit}}<p class="credit">Photo: <a href="{{.CreditURL}}" rel="noopener" target="_blank">{{.Credit}}</a></p>{{end}}{{end}}
+
+{{define "gate-denied"}}<p class="denied">Sorry, friend. The door stays shut until you're 21.</p>{{end}}

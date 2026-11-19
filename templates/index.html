@@ -1,0 +1,44 @@
+{{define "content"}}
+<section class="hero">
+  <div class="sunburst" aria-hidden="true"></div>
+  <div class="wrap hero-inner">
+    <div class="hero-copy">
+      <span class="eyebrow rise" style="--i:0">Members only · Since 1926</span>
+      <h1>The finest wines are kept <em>behind the door</em>.</h1>
+      <p class="rise" style="--i:2">Pull up a stool. Hand-picked bottles from Mendoza to Sauternes, with the story, tasting notes and pairings behind every one.</p>
+      <a class="btn btn-brass rise" style="--i:3" href="/wines" data-curtain>Enter the cellar</a>
+    </div>
+    <div class="back-bar" aria-hidden="true">
+      <div class="shelf-bottles">
+        {{range $i, $w := .Data.Shelf}}<div class="bottle-wrap hero-bottle s-{{$w.Style}}" style="--i:{{$i}}{{if $w.Img}}; --mask: url({{img $w}}){{end}}">{{template "bottle-art" $w}}</div>{{end}}
+      </div>
+      <div class="shelf"></div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap section">
+  <header class="section-title">
+    <span class="eyebrow">The sommelier's selection</span>
+    <h2>Featured Wines</h2>
+    <span class="ornament" aria-hidden="true"></span>
+  </header>
+  <div class="grid">{{range .Data.Featured}}{{template "card" .}}{{end}}</div>
+  <p class="center"><a class="btn" href="/wines">See the whole cellar</a></p>
+</section>
+
+<section class="section band">
+  <div class="wrap">
+    <header class="section-title">
+      <span class="eyebrow">Name your poison</span>
+      <h2>Browse by Style</h2>
+      <span class="ornament" aria-hidden="true"></span>
+    </header>
+    <div class="styles">
+      {{range .Data.Styles}}<a class="style-tile s-{{.Key}}" href="/wines?style={{.Key}}">
+        <svg class="bottle" aria-hidden="true"><use href="#bottle"/></svg><span>{{.Label}}</span>
+      </a>{{end}}
+    </div>
+  </div>
+</section>
+{{end}}

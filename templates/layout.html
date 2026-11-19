@@ -1,0 +1,45 @@
+{{define "layout"}}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{if .Title}}{{.Title}} · {{end}}The Cellar</title>
+  <meta name="description" content="A speakeasy wine cellar: fine wines from the world's great regions, with tasting notes and food pairings.">
+  <meta name="theme-color" content="#0e0b09">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Lora:wght@500;600&family=Lato:wght@300;400;700&display=swap">
+  <link rel="stylesheet" href="/static/style.css?v={{v}}">
+  <script>
+    // The "Enter the cellar" curtains (app.js) part on this page: tag that transition so CSS keeps the bottles
+    // out of it. Inline, because pagereveal fires before deferred scripts run.
+    addEventListener("pagereveal", (e) => {
+      try { if (sessionStorage.getItem("curtain")) { sessionStorage.removeItem("curtain"); e.viewTransition?.types.add("curtain"); } } catch {}
+    });
+  </script>
+  <script src="/static/htmx.min.js?v={{v}}" defer></script>
+  <script src="/static/app.js?v={{v}}" defer></script>
+</head>
+<body>
+  {{if not .AgeOK}}{{template "age-gate"}}{{end}}
+  {{template "bottle-symbol"}}
+  <header class="site-header">
+    <a class="logo" href="/"><span aria-hidden="true">◆</span> The Cellar <span aria-hidden="true">◆</span></a>
+    <nav>
+      <a href="/wines">Wines</a>
+      <a href="/list">My list {{template "badge" .Cart}}</a>
+    </nav>
+  </header>
+  <main>{{template "content" .}}</main>
+  <dialog id="quick" aria-labelledby="quick-title">
+    <form method="dialog"><button class="quick-close" aria-label="Close">×</button></form>
+    <div id="quick-body"></div>
+  </dialog>
+  <footer class="site-footer">
+    <span class="ornament" aria-hidden="true"></span>
+    <a class="logo" href="/">The Cellar</a>
+    <p>Knock twice. Drink responsibly. You must be 21 or older to enter.</p>
+    <p><a href="/credits">Photo credits</a> · Prices are typical retail prices, for reference. Nothing is sold on this site.</p>
+  </footer>
+</body>
+</html>{{end}}

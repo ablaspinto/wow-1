@@ -1,0 +1,28 @@
+{{define "content"}}{{with .Data}}
+<section class="wrap section page">
+  <span class="eyebrow">The collection</span>
+  <h2 class="page-title">Our Wines</h2>
+
+  {{/* Works as a plain GET form without JS; htmx upgrades it to live filtering. */}}
+  <form class="filters" action="/wines" hx-get="/wines" hx-trigger="input delay:150ms, submit"
+        hx-target="#grid" hx-swap="innerHTML transition:true" hx-push-url="true">
+    <input type="search" name="q" value="{{.Filter.Q}}" placeholder="Search grape, region, producer…" aria-label="Search wines">
+    <fieldset class="pills">
+      <legend class="sr-only">Style</legend>
+      <label class="pill"><input type="radio" name="style" value=""{{if eq .Filter.Style ""}} checked{{end}}>All</label>
+      {{range .Styles}}<label class="pill"><input type="radio" name="style" value="{{.Key}}"{{if eq .Key $.Data.Filter.Style}} checked{{end}}>{{.Label}}</label>{{end}}
+    </fieldset>
+    <select name="country" aria-label="Country">
+      <option value="">All countries</option>
+      {{range .Countries}}<option{{if eq . $.Data.Filter.Country}} selected{{end}}>{{.}}</option>{{end}}
+    </select>
+    <select name="max" aria-label="Price">
+      <option value="">Any price</option>
+      {{range .Prices}}<option value="{{.Cents}}"{{if eq .Cents $.Data.Filter.MaxCents}} selected{{end}}>{{.Label}}</option>{{end}}
+    </select>
+    <noscript><button class="btn btn-sm">Filter</button></noscript>
+  </form>
+
+  <div id="grid">{{template "grid" .}}</div>
+</section>
+{{end}}{{end}}

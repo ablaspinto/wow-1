@@ -1,0 +1,145 @@
+[
+  {
+    "id": "trapiche-oak-cask-malbec", "name": "Oak Cask Malbec", "producer": "Trapiche",
+    "grape": "Malbec", "style": "red", "country": "Argentina", "region": "Mendoza",
+    "vintage": "", "abv": 14, "price_cents": 1200,
+    "description": "From one of Argentina's oldest wineries, founded in Mendoza in 1883. Part of the wine rests in oak casks, which rounds out Malbec's dark fruit.",
+    "notes": "Plum, blackberry and violet, with vanilla and a little spice from the oak.",
+    "pairing": "Grilled steak, empanadas, hard cheeses",
+    "img": "trapiche-oak-cask-malbec.webp", "featured": true,
+    "credit": "NMS_FW, CC BY-SA 4.0, via Wikimedia Commons",
+    "credit_url": "https://commons.wikimedia.org/wiki/File:Trapiche_Oak_Cask_malbec.jpg"
+  },
+  {
+    "id": "beronia-rioja", "name": "Rioja", "producer": "Bodegas Beronia",
+    "grape": "Tempranillo", "style": "red", "country": "Spain", "region": "Rioja",
+    "vintage": "", "abv": 13.5, "price_cents": 1400,
+    "description": "Bodegas Beronia was founded in Rioja Alta in 1973. A classic, easygoing Rioja built around Tempranillo, Spain's great red grape.",
+    "notes": "Red cherry, strawberry and a soft touch of vanilla.",
+    "pairing": "Tapas, roast lamb, chorizo",
+    "img": "beronia-rioja.webp", "featured": false,
+    "credit": "Nigab Pressbilder, CC BY 2.0, via Wikimedia Commons",
+    "credit_url": "https://commons.wikimedia.org/wiki/File:12126_Beronia_rioja_nv.jpg"
+  },
+  {
+    "id": "vina-tondonia-6-ano", "name": "Viña Tondonia 6º Año", "producer": "R. López de Heredia",
+    "grape": "Tempranillo, Garnacha, Graciano, Mazuelo", "style": "red", "country": "Spain", "region": "Rioja",
+    "vintage": "", "abv": 12.5, "price_cents": 9500,
+    "description": "A legendary traditional house in Haro, founded in 1877, famous for ageing its wines for years before release. This is an older bottling, likely from the 1970s, wrapped in the classic gold wire netting.",
+    "notes": "Dried cherry, leather, tobacco and forest floor. Silky and savory with age.",
+    "pairing": "Roast lamb, game, aged Manchego",
+    "img": "vina-tondonia-6-ano.webp", "featured": true,
+    "credit": "Geographer, CC BY-SA 4.0, via Wikimedia Commons",
+    "credit_url": "https://commons.wikimedia.org/wiki/File:Rioja_6_Ano_Vina_Tondonia_R._Lopez_de_Heredia.jpg"
+  },
+  {
+    "id": "jacobs-creek-grenache-shiraz", "name": "Grenache Shiraz", "producer": "Jacob's Creek",
+    "grape": "Grenache, Shiraz", "style": "red", "country": "Australia", "region": "South Eastern Australia",
+    "vintage": "", "abv": 13.5, "price_cents": 1000,
+    "description": "Named after the creek in the Barossa Valley where Johann Gramp planted his first vines in 1847. Grenache brings bright fruit, Shiraz a little spice: an easygoing everyday red.",
+    "notes": "Raspberry, red cherry and a touch of pepper. Soft and juicy.",
+    "pairing": "Burgers, barbecue, pizza",
+    "img": "jacobs-creek-grenache-shiraz.webp", "featured": false,
+    "credit": "Pernod Ricard, CC BY-SA 3.0, via Wikimedia Commons",
+    "credit_url": "https://commons.wikimedia.org/wiki/File:Grenache_Shiraz.jpg"
+  },
+  {
+    "id": "jacobs-creek-chardonnay", "name": "Chardonnay", "producer": "Jacob's Creek",
+    "grape": "Chardonnay", "style": "white", "country": "Australia", "region": "South Eastern Australia",
+    "vintage": "", "abv": 13, "price_cents": 1000,
+    "description": "Australia's best-known Chardonnay: sunny, generous and medium-bodied, with just a kiss of oak.",
+    "notes": "Melon, white peach and citrus with a creamy finish.",
+    "pairing": "Roast chicken, creamy pasta, grilled fish",
+    "img": "jacobs-creek-chardonnay.webp", "featured": false,
+    "credit": "Pernod Ricard, CC BY-SA 3.0, via Wikimedia Commons",
+    "credit_url": "https://commons.wikimedia.org/wiki/File:JC_Chardonnay.jpg"
+  },
+  {
+    "id": "chateau-virant-primeur-blanc", "name": "Primeur Blanc", "producer": "Château Virant",
+    "grape": "White blend", "style": "white", "country": "France", "region": "Provence",
+    "vintage": "", "abv": 12.5, "price_cents": 1400,
+    "description": "From the Cheylan family's estate in Provence. A primeur is released young, just weeks after the harvest, to be enjoyed while it's fresh.",
+    "notes": "Fresh pear, citrus and white flowers. Light and lively.",
+    "pairing": "Goat cheese, salads, seafood",
+    "img": "chateau-virant-primeur-blanc.webp", "featured": false,
+    "credit": "Chateau virant, CC BY-SA 3.0, via Wikimedia Commons",
+    "credit_url": "https://commons.wikimedia.org/wiki/File:Primeur_blanc.jpg"
+  },
+  {
+    "id": "recanati-sauvignon-blanc", "name": "Sauvignon Blanc", "producer": "Recanati Winery",
+    "grape": "Sauvignon Blanc", "style": "white", "country": "Israel", "region": "Galilee",
+    "vintage": "", "abv": 12.5, "price_cents": 1600,
+    "description": "A modern Israeli winery, founded in 2000, working with grapes from the cooler hills of the Galilee.",
+    "notes": "Grapefruit, passion fruit and fresh herbs, with zesty acidity.",
+    "pairing": "Grilled fish, hummus and mezze, green salads",
+    "img": "recanati-sauvignon-blanc.webp", "featured": false,
+    "credit": "Drinking, CC BY-SA 3.0, via Wikimedia Commons",
+    "credit_url": "https://commons.wikimedia.org/wiki/File:Recanati_Sauvignon_blanc.jpg"
+  },
+  {
+    "id": "listel-rose-tendre", "name": "Rosé Tendre", "producer": "Listel",
+    "grape": "Grenache blend", "style": "rose", "country": "France", "region": "Sable de Camargue",
+    "vintage": "", "abv": 11.5, "price_cents": 900,
+    "description": "Grown on the sandy coastal vineyards of the Camargue in southern France. Tendre means soft: a gently fruity, easy-drinking rosé.",
+    "notes": "Strawberry, raspberry and candied citrus. Soft and lightly sweet.",
+    "pairing": "Summer salads, grilled shrimp, fruit desserts",
+    "img": "listel-rose-tendre.webp", "featured": false,
+    "credit": "Joséphine Gauchet, CC BY-SA 4.0, via Wikimedia Commons",
+    "credit_url": "https://commons.wikimedia.org/wiki/File:Listel_Ros%C3%A9_Tendre.jpg"
+  },
+  {
+    "id": "jacobs-creek-shiraz-rose", "name": "Shiraz Rosé", "producer": "Jacob's Creek",
+    "grape": "Shiraz", "style": "rose", "country": "Australia", "region": "South Eastern Australia",
+    "vintage": "", "abv": 12, "price_cents": 1000,
+    "description": "A bright, juicy rosé made from Shiraz, Australia's signature red grape.",
+    "notes": "Watermelon, cherry and red berries. Fresh and crisp.",
+    "pairing": "Picnics, grilled chicken, charcuterie",
+    "img": "jacobs-creek-shiraz-rose.webp", "featured": false,
+    "credit": "Pernod Ricard, CC BY-SA 3.0, via Wikimedia Commons",
+    "credit_url": "https://commons.wikimedia.org/wiki/File:JC_Shiraz_Rose.png"
+  },
+  {
+    "id": "devaux-ultra-d", "name": "Ultra D Extra Brut", "producer": "Champagne Devaux",
+    "grape": "Pinot Noir, Chardonnay", "style": "sparkling", "country": "France", "region": "Champagne",
+    "vintage": "NV", "abv": 12, "price_cents": 6500,
+    "description": "A Champagne house from the Côte des Bar, in the south of the region. Extra brut means very little sugar is added, so it's dry, pure and precise.",
+    "notes": "Citrus, white flowers and fresh brioche, with fine, lively bubbles.",
+    "pairing": "Oysters, sushi, as an aperitif",
+    "img": "devaux-ultra-d.webp", "featured": true,
+    "credit": "Champagnedevaux, CC BY-SA 4.0, via Wikimedia Commons",
+    "credit_url": "https://commons.wikimedia.org/wiki/File:Ultra_D_-_Champagne_Devaux.jpg"
+  },
+  {
+    "id": "jacobs-creek-chardonnay-pinot-noir", "name": "Chardonnay Pinot Noir Brut Cuvée", "producer": "Jacob's Creek",
+    "grape": "Chardonnay, Pinot Noir", "style": "sparkling", "country": "Australia", "region": "South Eastern Australia",
+    "vintage": "NV", "abv": 11.5, "price_cents": 1300,
+    "description": "Made from the two classic Champagne grapes and fermented a second time in the bottle, as the neck label says.",
+    "notes": "Green apple, citrus and a hint of brioche. Fine bubbles and a crisp, dry finish.",
+    "pairing": "Canapés, fried snacks, celebrations",
+    "img": "jacobs-creek-chardonnay-pinot-noir.webp", "featured": false,
+    "credit": "Jacob's Creek, CC BY-SA 3.0, via Wikimedia Commons",
+    "credit_url": "https://commons.wikimedia.org/wiki/File:Chardonnay_Pinot_Noir.jpg"
+  },
+  {
+    "id": "chateau-guiraud-1998", "name": "Sauternes (375 ml)", "producer": "Château Guiraud",
+    "grape": "Sémillon, Sauvignon Blanc", "style": "dessert", "country": "France", "region": "Sauternes",
+    "vintage": "1998", "abv": 13.5, "price_cents": 4500,
+    "description": "A Premier Cru in the famous 1855 Bordeaux classification. Sauternes is made from grapes shrivelled by noble rot, which concentrates their sugar into a rich, honeyed wine.",
+    "notes": "Apricot, honey, candied orange and saffron.",
+    "pairing": "Foie gras, blue cheese, fruit tarts",
+    "img": "chateau-guiraud-1998.webp", "featured": true,
+    "credit": "Tomas er, CC BY-SA 3.0, via Wikimedia Commons",
+    "credit_url": "https://commons.wikimedia.org/wiki/File:Ch%C3%A2teau_Guiraud_1998_demi.jpg"
+  },
+  {
+    "id": "chateau-rieussec-1999", "name": "Sauternes (375 ml)", "producer": "Château Rieussec",
+    "grape": "Sémillon, Sauvignon Blanc, Muscadelle", "style": "dessert", "country": "France", "region": "Sauternes",
+    "vintage": "1999", "abv": 14, "price_cents": 5000,
+    "description": "A Premier Cru Sauternes owned by the Rothschild family of Château Lafite since 1984. Golden, rich and built to age for decades.",
+    "notes": "Mango, pineapple, honeycomb and toasted almond.",
+    "pairing": "Roquefort, crème brûlée, spicy Asian dishes",
+    "img": "chateau-rieussec-1999.webp", "featured": false,
+    "credit": "Tomas er, CC BY-SA 3.0, via Wikimedia Commons",
+    "credit_url": "https://commons.wikimedia.org/wiki/File:Ch%C3%A2teau_Rieussec_1999_demi.jpg"
+  }
+]

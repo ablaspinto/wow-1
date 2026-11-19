@@ -1,0 +1,8 @@
+{{define "content"}}
+<section class="wrap section page narrow">
+  <span class="eyebrow">Your selection</span>
+  <h2 class="page-title">My list</h2>
+  {{if .Data.Sent}}<p class="notice">Your wine list is on its way to your inbox. Santé!</p>{{end}}
+  {{template "cart-body" .Data}}
+</section>
+{{end}}

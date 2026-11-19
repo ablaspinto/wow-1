@@ -1,0 +1,45 @@
+{{/* The wine list email. Email clients ignore stylesheets, so styles are inline and the layout is tables. */}}<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Your wine list from The Cellar</title></head>
+<body style="margin:0;padding:0;background:#efe8da;font-family:Georgia,'Times New Roman',serif;color:#2a1f17">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#efe8da">
+<tr><td align="center" style="padding:28px 12px">
+  <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px;background:#fbf8f2;border:1px solid #d9cbb0">
+    <tr><td align="center" style="background:#0e0b09;padding:26px 24px;color:#c9a45c;font-size:20px;letter-spacing:6px">◆ THE CELLAR ◆</td></tr>
+    <tr><td style="padding:28px 28px 8px">
+      <h1 style="margin:0 0 10px;font-size:26px;font-weight:normal">Your wine list</h1>
+      <p style="margin:0;font-size:15px;line-height:1.5;color:#5a4a3a">Here {{if eq .Count 1}}is the wine{{else}}are the {{.Count}} wines{{end}} you saved, grouped by style. Each one lists the producer, name, vintage and region (everything a wine shop needs to find it), what to serve it with, and a link to shops that stock it.</p>
+    </td></tr>
+    {{range .Groups}}
+    <tr><td style="padding:22px 28px 4px;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#9a7a3c;border-bottom:1px solid #e6dcc8">{{.Label}}</td></tr>
+    {{range .Lines}}
+    <tr><td style="padding:14px 28px;border-bottom:1px solid #efe6d6">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+        <td width="56" valign="top" style="padding-right:16px">{{if .Wine.Img}}<img src="{{img .Wine}}" alt="" height="120" style="display:block;height:120px;width:auto;max-width:56px;border:0">{{end}}</td>
+        <td valign="top">
+          <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#7a6a58">{{.Wine.Producer}}</div>
+          <div style="font-size:19px;margin:2px 0 6px">{{.Wine.Name}}{{with .Wine.Vintage}} <span style="color:#9a7a3c">{{.}}</span>{{end}}</div>
+          <div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.5;color:#5a4a3a">
+            {{with .Wine.Region}}{{.}}, {{end}}{{.Wine.Country}}{{with .Wine.Grape}} · {{.}}{{end}}{{if .Wine.ABV}} · {{.Wine.ABV}}% ABV{{end}}<br>
+            Typical price: {{money .Wine.PriceCents}}
+          </div>
+          {{with .Wine.Pairing}}<div style="font-size:14px;line-height:1.5;margin-top:6px;color:#2a1f17"><span style="font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#9a7a3c">Pairs with</span>&nbsp; {{.}}</div>{{end}}
+          <div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;margin-top:8px">
+            <a href="{{find .Wine}}" style="color:#8a5a1c">Where to buy →</a>
+            &nbsp;&nbsp;<a href="{{$.Site}}/wines/{{.Wine.ID}}" style="color:#8a5a1c">Tasting notes →</a>
+          </div>
+        </td>
+      </tr></table>
+    </td></tr>
+    {{end}}{{end}}
+    <tr><td style="padding:18px 28px 28px;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.55;color:#5a4a3a">
+      <strong>Want to try one?</strong> "Where to buy" opens Wine-Searcher, which lists shops that stock the wine and what they charge. In a shop, show them the producer, name and vintage above.
+    </td></tr>
+    <tr><td align="center" style="background:#0e0b09;padding:18px 24px;font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:1.6;color:#a3927a">
+      <a href="{{.Site}}" style="color:#c9a45c">The Cellar</a> · Prices are typical retail prices, for reference. Nothing is sold through The Cellar.<br>Please drink responsibly.
+    </td></tr>
+  </table>
+</td></tr>
+</table>
+</body>
+</html>

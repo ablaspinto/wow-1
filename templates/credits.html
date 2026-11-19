@@ -1,0 +1,10 @@
+{{define "content"}}
+<section class="wrap section page narrow">
+  <span class="eyebrow">With thanks</span>
+  <h2 class="page-title">Photo credits</h2>
+  <p class="meta">Bottle photos come from Wikimedia Commons under free licenses. Each was resized and had its background removed for this site.</p>
+  <ul class="credits">
+    {{range .Data}}<li><a href="/wines/{{.ID}}">{{.Name}}</a> ({{.Producer}}): <a href="{{.CreditURL}}" rel="noopener" target="_blank">{{.Credit}}</a></li>{{end}}
+  </ul>
+</section>
+{{end}}
